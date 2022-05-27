@@ -5,22 +5,20 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github pmdias/lumiere))
 
-(authors "Author Name")
+(authors "Pedro Dias")
 
-(maintainers "Maintainer Name")
+(maintainers "Pedro Dias")
 
 (license LICENSE)
 
-(documentation https://url/to/documentation)
-
 (package
  (name lumiere)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "Experimental ray tracing")
+ (description "An experimental ray tracing library and application")
  (depends ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (raytracing)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
