@@ -10,6 +10,7 @@ let () =
     let spec = { width=256; height=256 } in
     write_output_header spec;
     for j = spec.height - 1 downto 0 do
+        Printf.fprintf stderr "\rScanlines remaining: %d " j;
         for i = 0 to spec.width - 1 do
             let r = float_of_int i /. float_of_int (spec.width - 1) in
             let g = float_of_int j /. float_of_int (spec.height - 1) in
@@ -19,4 +20,5 @@ let () =
             let ib = int_of_float (255.999 *. b) in
             Printf.fprintf stdout "%d %d %d\n" ir ig ib
         done
-    done
+    done;
+    Printf.fprintf stderr "\nDone.\n"
