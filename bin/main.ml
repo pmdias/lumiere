@@ -15,10 +15,7 @@ let () =
             let r = float_of_int i /. float_of_int (spec.width - 1) in
             let g = float_of_int j /. float_of_int (spec.height - 1) in
             let b = 0.25 in
-            let ir = int_of_float (255.999 *. r) in
-            let ig = int_of_float (255.999 *. g) in
-            let ib = int_of_float (255.999 *. b) in
-            Printf.fprintf stdout "%d %d %d\n" ir ig ib
+            Lumiere.Color.write_color (Lumiere.Geometry.Vec.make r g b)
         done
     done;
     Printf.fprintf stderr "\nDone.\n"
