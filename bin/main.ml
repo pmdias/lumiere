@@ -9,13 +9,12 @@ let hit_sphere (center : Vec.t) (r : float) (ray : Lumiere.Ray.t) : bool =
   let oc = ray.orig -: center in
   let a = Vec.dot ray.dir ray.dir in
   let b = 2. *. Vec.dot oc ray.dir in
-  let c = Vec.dot oc oc -. r *. r in
-  let discriminant = b *. b -. 4. *. a *. c in
+  let c = Vec.dot oc oc -. (r *. r) in
+  let discriminant = (b *. b) -. (4. *. a *. c) in
   discriminant > 0.
 
 let ray_color (r : Lumiere.Ray.t) =
-  if hit_sphere (Vec.make 0. 0. (-1.)) 0.5 r then
-    Vec.make 1. 0. 0.
+  if hit_sphere (Vec.make 0. 0. (-1.)) 0.5 r then Vec.make 1. 0. 0.
   else
     let unit_direction = Vec.norm r.dir in
     let t = 0.5 *. (unit_direction.y +. 1.) in
@@ -30,14 +29,20 @@ let () =
   let origin = Vec.make 0. 0. 0. in
   let horizontal = Vec.make viewport_width 0. 0. in
   let vertical = Vec.make 0. viewport_height 0. in
-  let lower_left_corner = origin -: horizontal /: 2. -: vertical /: 2. -: Vec.make 0. 0. focal_length in
+  let lower_left_corner =
+    origin -: (horizontal /: 2.) -: (vertical /: 2.)
+    -: Vec.make 0. 0. focal_length
+  in
   write_output_header spec;
   for j = spec.height - 1 downto 0 do
     Printf.fprintf stderr "\rScanlines remaining: %d " j;
     for i = 0 to spec.width - 1 do
       let u = float_of_int i /. float_of_int (spec.width - 1) in
       let v = float_of_int j /. float_of_int (spec.height - 1) in
-      let r = Lumiere.Ray.make origin (lower_left_corner +: horizontal *: u +: vertical *: v -: origin) in
+      let r =
+        Lumiere.Ray.make origin
+          (lower_left_corner +: (horizontal *: u) +: (vertical *: v) -: origin)
+      in
       let color = ray_color r in
       Lumiere.Color.write_color color
     done
