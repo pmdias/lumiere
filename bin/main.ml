@@ -5,16 +5,19 @@ type image_spec = { width : int; height : int }
 let write_output_header { width; height } =
   Printf.fprintf stdout "P3\n%d %d\n255\n" width height
 
-let hit_sphere (center : Vec.t) (r : float) (ray : Lumiere.Ray.t) : bool =
+let hit_sphere (center : Vec.t) (r : float) (ray : Lumiere.Ray.t) : float =
   let oc = ray.orig -: center in
   let a = Vec.dot ray.dir ray.dir in
   let b = 2. *. Vec.dot oc ray.dir in
   let c = Vec.dot oc oc -. (r *. r) in
   let discriminant = (b *. b) -. (4. *. a *. c) in
-  discriminant > 0.
+  if discriminant < 0. then -1. else (-.b -. sqrt discriminant) /. (2. *. a)
 
 let ray_color (r : Lumiere.Ray.t) =
-  if hit_sphere (Vec.make 0. 0. (-1.)) 0.5 r then Vec.make 1. 0. 0.
+  let t = hit_sphere (Vec.make 0. 0. (-1.)) 0.5 r in
+  if t > 0. then
+    let n = Vec.norm (Lumiere.Ray.at r t -: Vec.make 0. 0. (-1.)) in
+    Vec.make (n.x +. 1.) (n.y +. 1.) (n.z +. 1.) *: 0.5
   else
     let unit_direction = Vec.norm r.dir in
     let t = 0.5 *. (unit_direction.y +. 1.) in
