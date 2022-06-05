@@ -1,7 +1,5 @@
 open Lumiere.Geometry
 
-type image_spec = { width : int; height : int }
-
 let hit_sphere (center : Vec.t) (r : float) (ray : Lumiere.Ray.t) : float =
   let oc = ray.orig -: center in
   let a = Vec.dot ray.dir ray.dir in
@@ -22,27 +20,16 @@ let ray_color (r : Lumiere.Ray.t) =
 
 let () =
   let aspect_ratio = 16. /. 9. in
-  let spec = { width = 400; height = int_of_float (400. /. aspect_ratio) } in
-  let viewport_height = 2. in
-  let viewport_width = aspect_ratio *. viewport_height in
-  let focal_length = 1. in
-  let origin = Vec.make 0. 0. 0. in
-  let horizontal = Vec.make viewport_width 0. 0. in
-  let vertical = Vec.make 0. viewport_height 0. in
-  let lower_left_corner =
-    origin -: (horizontal /: 2.) -: (vertical /: 2.)
-    -: Vec.make 0. 0. focal_length
-  in
-  Lumiere.Output.PPM.write_header spec.width spec.height;
-  for j = spec.height - 1 downto 0 do
+  let image_width = 400 in
+  let image_height = int_of_float (float_of_int image_width /. aspect_ratio) in
+  let camera = Lumiere.Camera.make aspect_ratio 2. in
+  Lumiere.Output.PPM.write_header image_width image_height;
+  for j = image_height - 1 downto 0 do
     Printf.fprintf stderr "\rScanlines remaining: %d " j;
-    for i = 0 to spec.width - 1 do
-      let u = float_of_int i /. float_of_int (spec.width - 1) in
-      let v = float_of_int j /. float_of_int (spec.height - 1) in
-      let r =
-        Lumiere.Ray.make origin
-          (lower_left_corner +: (horizontal *: u) +: (vertical *: v) -: origin)
-      in
+    for i = 0 to image_width - 1 do
+      let u = float_of_int i /. float_of_int (image_width - 1) in
+      let v = float_of_int j /. float_of_int (image_height - 1) in
+      let r = Lumiere.Camera.get_ray camera u v in
       let color = ray_color r in
       Lumiere.Color.write_color color
     done

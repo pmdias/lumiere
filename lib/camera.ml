@@ -7,14 +7,12 @@ type t = {
   vertical : Vec.t;
 }
 
-let make () =
-  let aspect_ratio = 16. /. 9. in
-  let viewport_height = 2. in
-  let viewport_width = aspect_ratio *. viewport_height in
+let make aspect_ratio height =
+  let width = aspect_ratio *. height in
   let focal_length = 1. in
   let origin = Vec.make 0. 0. 0. in
-  let horizontal = Vec.make viewport_width 0. 0. in
-  let vertical = Vec.make 0. viewport_height 0. in
+  let horizontal = Vec.make width 0. 0. in
+  let vertical = Vec.make 0. height 0. in
   let lower_left_corner =
     origin -: (horizontal /: 2.) -: (vertical /: 2.)
     -: Vec.make 0. 0. focal_length
