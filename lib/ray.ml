@@ -8,5 +8,8 @@ end
 
 type t = { orig : Geometry.Point.t; dir : Geometry.Vec.t }
 
+(** Creates a new ray with the specified origin and direction *)
 let make o d = { orig = o; dir = d }
+
+(** Compute the value of the ray at position [t] *)
 let at { orig = o; dir = d } t = o +: (d *: t)
