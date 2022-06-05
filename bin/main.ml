@@ -2,9 +2,6 @@ open Lumiere.Geometry
 
 type image_spec = { width : int; height : int }
 
-let write_output_header { width; height } =
-  Printf.fprintf stdout "P3\n%d %d\n255\n" width height
-
 let hit_sphere (center : Vec.t) (r : float) (ray : Lumiere.Ray.t) : float =
   let oc = ray.orig -: center in
   let a = Vec.dot ray.dir ray.dir in
@@ -36,7 +33,7 @@ let () =
     origin -: (horizontal /: 2.) -: (vertical /: 2.)
     -: Vec.make 0. 0. focal_length
   in
-  write_output_header spec;
+  Lumiere.Output.PPM.write_header spec.width spec.height;
   for j = spec.height - 1 downto 0 do
     Printf.fprintf stderr "\rScanlines remaining: %d " j;
     for i = 0 to spec.width - 1 do
