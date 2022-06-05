@@ -1,3 +1,7 @@
+module Config = struct
+  type t = { width : int; height : int }
+end
+
 module PPM = struct
   (** Write the header of a PPM file *)
   let write_header w h = Printf.fprintf stdout "P3\n%d %d\n255\n" w h
