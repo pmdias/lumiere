@@ -1,5 +1,19 @@
 module Config = struct
-  type t = { width : int; height : int }
+  type t = { width : int; height : int; aspect_ratio : float }
+  (** Configuration parameters used to create the output of the rendering
+      pipeline *)
+
+  (** Make a new output configuration from a specific [width] and
+      [height] values *)
+  let make_from_dims width height =
+    let aspect_ratio = float_of_int width /. float_of_int height in
+    { width; height; aspect_ratio }
+
+  (** Make a new output configuration from a specific [width] and
+      [aspect ratio]. *)
+  let make_from_ratio width aspect_ratio =
+    let height = int_of_float @@ (float_of_int width /. aspect_ratio) in
+    { width; height; aspect_ratio }
 end
 
 module PPM = struct
