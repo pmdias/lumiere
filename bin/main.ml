@@ -21,16 +21,14 @@ let ray_color (r : Lumiere.Ray.t) =
 let () =
   let aspect_ratio = 16. /. 9. in
   let image_width = 400 in
-  let image_height =
-    int_of_float @@ (float_of_int image_width /. aspect_ratio)
-  in
-  let camera = Lumiere.Camera.make aspect_ratio 2. in
-  Lumiere.Output.PPM.write_header image_width image_height;
-  for j = image_height - 1 downto 0 do
+  let cfg = Lumiere.Output.Config.make_from_ratio image_width aspect_ratio in
+  let camera = Lumiere.Camera.make cfg.aspect_ratio 2. in
+  Lumiere.Output.PPM.write_header cfg.width cfg.height;
+  for j = cfg.height - 1 downto 0 do
     Printf.fprintf stderr "\rScanlines remaining: %d " j;
-    for i = 0 to image_width - 1 do
-      let u = float_of_int i /. float_of_int (image_width - 1) in
-      let v = float_of_int j /. float_of_int (image_height - 1) in
+    for i = 0 to cfg.width - 1 do
+      let u = float_of_int i /. float_of_int (cfg.width - 1) in
+      let v = float_of_int j /. float_of_int (cfg.height - 1) in
       let r = Lumiere.Camera.get_ray camera u v in
       let color = ray_color r in
       Lumiere.Color.write_color color
