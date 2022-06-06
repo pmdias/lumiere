@@ -21,7 +21,7 @@ let ray_color (r : Lumiere.Ray.t) =
 let () =
   let aspect_ratio = 16. /. 9. in
   let image_width = 400 in
-  let image_height = int_of_float (float_of_int image_width /. aspect_ratio) in
+  let image_height = int_of_float @@ float_of_int image_width /. aspect_ratio in
   let camera = Lumiere.Camera.make aspect_ratio 2. in
   Lumiere.Output.PPM.write_header image_width image_height;
   for j = image_height - 1 downto 0 do
