@@ -20,7 +20,7 @@ let ray_color (r : Lumiere.Ray.t) =
 
 let () =
   let aspect_ratio = 16. /. 9. in
-  let image_width = 400 in
+  let image_width = 800 in
   let cfg = Lumiere.Output.Config.make_from_ratio image_width aspect_ratio in
   let camera = Lumiere.Camera.make cfg.aspect_ratio 2. in
   Lumiere.Output.PPM.write_header cfg.width cfg.height;
