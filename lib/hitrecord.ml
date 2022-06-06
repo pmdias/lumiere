@@ -9,3 +9,5 @@ let set_front_face hrec (ray : Ray.t) outward_normal =
   let normal = if front_face then outward_normal else outward_normal *: -1. in
   let new_rec = make hrec.point normal hrec.value in
   { new_rec with front_face }
+
+let get_point hr = hr.point

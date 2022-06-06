@@ -9,3 +9,5 @@ val make : Vec.t -> Vec.t -> float -> t
 
 val set_front_face : t -> Ray.t -> Vec.t -> t
 (** Update the [front_face] flag of a specific hit record structure *)
+
+val get_point : t -> Vec.t
