@@ -1,3 +1,0 @@
-(library
- (name Lumiere)
- (public_name lumiere))
