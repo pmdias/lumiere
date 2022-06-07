@@ -41,7 +41,7 @@ module Vec = struct
 
   let length_squared v = dot v v
   let length v = sqrt @@ length_squared v
-  let norm v = length v |> divide v
+  let normalize v = length v |> divide v
 
   let negate v =
     let x = -.v.x in
@@ -49,7 +49,7 @@ module Vec = struct
     let z = -.v.z in
     make x y z
 
-  let make_normalized x y z = make x y z |> norm
+  let make_normalized x y z = make x y z |> normalize
 
   let make_of_int a b c =
     let x = float_of_int a in

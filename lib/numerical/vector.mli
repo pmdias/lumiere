@@ -22,11 +22,28 @@ module Vec : sig
       as type [int]. The resulting vector still uses [float] for each component *)
 
   val dot : t -> t -> float
+  (** Compute the dot product of two vectors [a] and [b] *)
+
   val cross : t -> t -> t
+  (** Compute the cross product of two vectors [a] and [b] *)
+
   val length_squared : t -> float
+  (** Compute the squared length of vector [v]. This is essentialy the same as computing
+      [Vec.dot v v]. *)
+
   val length : t -> float
-  val norm : t -> t
+  (** Compute the length, i.e. the magnitude, of a vector. If you're only using the length
+      to perform some comparison, think about using [Vec.length_squared] instead, since
+      it is more efficient. *)
+
+  val normalize : t -> t
+  (** Normalize vector [v] so that it has length equal to 1. This is essentialy the same
+      operation as computing the length of the vector and dividing every component of
+      the vector by it. *)
+
   val negate : t -> t
+  (** Return a new vector that has all its components equal to vector [v] components
+      multiplied by -1. *)
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t
