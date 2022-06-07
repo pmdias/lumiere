@@ -1,2 +1,3 @@
 (test
- (name lumiere))
+ (name vector_test)
+ (libraries numerical alcotest))
