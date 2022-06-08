@@ -1,3 +1,4 @@
+open Numerical
 open Numerical.Vector
 
 type t = {
@@ -19,3 +20,7 @@ let make aspect_ratio =
     -: Vec.make 0. 0. focal_length
   in
   { origin; lower_left_corner; horizontal; vertical }
+
+let get_ray c u v =
+  c.lower_left_corner +: c.horizontal *: u +: c.vertical *: v -: c.origin
+  |> Ray.make c.origin
