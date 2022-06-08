@@ -22,5 +22,5 @@ let make aspect_ratio =
   { origin; lower_left_corner; horizontal; vertical }
 
 let get_ray c u v =
-  c.lower_left_corner +: c.horizontal *: u +: c.vertical *: v -: c.origin
+  c.lower_left_corner +: (c.horizontal *: u) +: (c.vertical *: v) -: c.origin
   |> Ray.make c.origin
