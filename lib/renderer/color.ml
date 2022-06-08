@@ -7,6 +7,9 @@ let make r g b =
   let bc = clamp b in
   { r = rc; g = gc; b = bc }
 
+let get_red c = c.r
+let get_green c = c.g
+let get_blue c = c.b
 let red = make 255 0 0
 let green = make 0 255 0
 let blue = make 0 0 255
