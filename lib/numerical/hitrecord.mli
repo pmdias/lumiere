@@ -1,6 +1,6 @@
 open Vector
 
-type t = { point : Vec.t ; normal : Vec.t ; t : float ; front_face : bool }
+type t = { point : Vec.t; normal : Vec.t; t : float; front_face : bool }
 (** Record structure used to store the information regarding the intersection
     of a [Ray.t] with any structure in the scene *)
 

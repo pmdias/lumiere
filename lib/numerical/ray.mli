@@ -1,6 +1,6 @@
 open Vector
 
-type t = { origin : Vec.t ; direction : Vec.t }
+type t = { origin : Vec.t; direction : Vec.t }
 (** Record type that contains the information required to emulate a
     ray to be shot into the scene. If consists of two vectors [Vec.t]
     fields: an [origin] that specifies the origin point of the ray, and
