@@ -41,6 +41,8 @@ module Sphere = struct
   let make center radius = { center; radius }
 end
 
+let hit_test o = o.hit_test
+
 let make_sphere center radius =
   let s = Sphere.make center radius in
   let hit_test = Sphere.hit_test s in
