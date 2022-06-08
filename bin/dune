@@ -1,4 +1,4 @@
 (executable
  (public_name lumiere)
  (name main)
- (libraries numerical))
+ (libraries renderer entities numerical))
