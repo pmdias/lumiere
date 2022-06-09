@@ -12,7 +12,7 @@ let generate_pixels o =
   let pixel_count = o.width * o.height in
   let gen_pixel i =
     let x = i mod o.width in
-    let y = o.height - 1 - i / o.width in
+    let y = o.height - 1 - (i / o.width) in
     (pixel_count, i, x, y)
   in
   Seq.init pixel_count gen_pixel

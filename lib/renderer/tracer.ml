@@ -21,10 +21,15 @@ let default_color (ray : Ray.t) =
   let c = (Vec.make 1. 1. 1. *: (1. -. t)) +: (Vec.make 0.5 0.7 1. *: t) in
   Color.from_vec c
 
+let material_color (hitrecord : Hitrecord.t) =
+  let ncolor = hitrecord.normal +: Vec.make 1. 1. 1. in
+  let color = ncolor *: 0.5 in
+  Color.from_vec color
+
 let color_sample ray c =
   match c with
   | None -> default_color ray
-  | _ -> Color.red
+  | Some hitrecord -> material_color hitrecord
 
 let convert_pixel_to_camera_coordinates output x y =
   let width = Output.get_width output - 1 in
