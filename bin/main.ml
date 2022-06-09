@@ -4,7 +4,12 @@ open Renderer
 
 let scene_factory aspect_ratio =
   let camera = Camera.make aspect_ratio in
-  let objects = [ Object.make_sphere (Vec.make 0. 0. (-1.)) 0.5 ] in
+  let objects =
+    [
+      Object.make_sphere (Vec.make 0. 0. (-1.)) 0.5;
+      Object.make_sphere (Vec.make 0. (-100.5) (-1.)) 100.;
+    ]
+  in
   Scene.make camera objects
 
 let () =
