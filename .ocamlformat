@@ -1,4 +1,5 @@
 profile = default
-version = 0.21.0
+version = 0.22.4
 
+break-cases=all
 break-fun-decl=fit-or-vertical
