@@ -10,11 +10,10 @@ let make r g b =
   { r = rc; g = gc; b = bc }
 
 let from_vec (v : Vec.t) =
-  let r = int_of_float @@ v.x *. 255.999 in
-  let g = int_of_float @@ v.y *. 255.999 in
-  let b = int_of_float @@ v.z *. 255.999 in
+  let r = int_of_float @@ (v.x *. 255.999) in
+  let g = int_of_float @@ (v.y *. 255.999) in
+  let b = int_of_float @@ (v.z *. 255.999) in
   make r g b
-
 
 let get_red c = c.r
 let get_green c = c.g

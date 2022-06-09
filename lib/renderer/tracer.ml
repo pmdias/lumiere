@@ -6,17 +6,25 @@ let trace_sample scene ray =
   let result =
     List.map Object.hit_test @@ Scene.get_objects scene
     |> List.map (fun x -> x ray 0.001 Float.infinity)
-    |> List.filter (fun x -> match x with None -> false | _ -> true)
+    |> List.filter (fun x ->
+           match x with
+           | None -> false
+           | _ -> true)
   in
-  match result with [] -> None | x :: _ -> x
+  match result with
+  | [] -> None
+  | x :: _ -> x
 
 let default_color (ray : Ray.t) =
   let direction = Vec.normalize ray.direction in
   let t = 0.5 *. (direction.y +. 1.) in
-  let c = (Vec.make 1. 1. 1.) *: (1. -. t) +: (Vec.make 0.5 0.7 1.) *: t in
+  let c = (Vec.make 1. 1. 1. *: (1. -. t)) +: (Vec.make 0.5 0.7 1. *: t) in
   Color.from_vec c
 
-let color_sample ray c = match c with None -> default_color ray | _ -> Color.red
+let color_sample ray c =
+  match c with
+  | None -> default_color ray
+  | _ -> Color.red
 
 let convert_pixel_to_camera_coordinates output x y =
   let width = Output.get_width output - 1 in
