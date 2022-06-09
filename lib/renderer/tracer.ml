@@ -44,7 +44,7 @@ let trace_pixel scene output pixel_data =
   let inner_trace color =
     let u, v = convert_pixel_to_camera_coordinates output x y in
     let ray = Camera.get_ray camera u v in
-    ray |> trace_sample scene |> color_sample ray |> (+:) color
+    ray |> trace_sample scene |> color_sample ray |> ( +: ) color
   in
   let color = Vec.make 0. 0. 0. in
   Seq.init 100 (fun x -> x)
