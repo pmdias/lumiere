@@ -56,6 +56,15 @@ module Vec = struct
     let y = float_of_int b in
     let z = float_of_int c in
     make x y z
+
+  let fmap f =
+    let call v =
+      let x = f v.x in
+      let y = f v.y in
+      let z = f v.z in
+      make x y z
+    in
+    call
 end
 
 let ( +: ) a b = Vec.add a b

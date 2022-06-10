@@ -44,6 +44,10 @@ module Vec : sig
   val negate : t -> t
   (** Return a new vector that has all its components equal to vector [v] components
       multiplied by -1. *)
+
+  val fmap : (float -> float) -> t -> t
+  (** Given a function [f] that maps a [float] to a [float], apply that function to each
+      component of the vector [v] and return a new vector *)
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t
