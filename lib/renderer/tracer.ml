@@ -2,19 +2,6 @@ open Entities
 open Numerical
 open Numerical.Vector
 
-let trace_sample scene ray =
-  let result =
-    List.map Object.hit_test @@ Scene.get_objects scene
-    |> List.map (fun x -> x ray 0.001 Float.infinity)
-    |> List.filter (fun x ->
-           match x with
-           | None -> false
-           | _ -> true)
-  in
-  match result with
-  | [] -> None
-  | x :: _ -> x
-
 let default_color (ray : Ray.t) =
   let direction = Vec.normalize ray.direction in
   let t = 0.5 *. (direction.y +. 1.) in
@@ -28,6 +15,19 @@ let color_sample ray c =
   match c with
   | None -> default_color ray
   | Some hitrecord -> material_color hitrecord
+
+let is_hit = function
+  | None -> false
+  | _ -> true
+
+let safe_head = function
+  | [] -> None
+  | x :: _ -> x
+
+let trace_sample scene ray =
+  List.map Object.hit_test @@ Scene.get_objects scene
+  |> List.map (fun x -> x ray 0.001 Float.infinity)
+  |> List.filter is_hit |> safe_head |> color_sample ray
 
 let convert_pixel_to_camera_coordinates output x y =
   let width = Output.get_width output - 1 in
@@ -44,7 +44,7 @@ let trace_pixel scene output pixel_data =
   let inner_trace color =
     let u, v = convert_pixel_to_camera_coordinates output x y in
     let ray = Camera.get_ray camera u v in
-    ray |> trace_sample scene |> color_sample ray |> ( +: ) color
+    ray |> trace_sample scene |> ( +: ) color
   in
   let color = Vec.make 0. 0. 0. in
   Seq.init 100 (fun x -> x)
