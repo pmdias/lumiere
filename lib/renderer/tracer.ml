@@ -26,7 +26,7 @@ let rec trace_sample scene depth ray =
 and color_sample scene depth ray sh =
   let material_color (hitrecord : Hitrecord.t) =
     let target =
-      hitrecord.point +: hitrecord.normal +: Utils.random_in_unit_sphere ()
+      hitrecord.point +: hitrecord.normal +: Utils.random_unit_vector ()
     in
     let new_ray = Ray.make hitrecord.point (target -: hitrecord.point) in
     trace_sample scene (depth - 1) new_ray *: 0.5
