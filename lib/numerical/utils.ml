@@ -20,5 +20,8 @@ let rec random_in_unit_sphere () =
   in
   random_vector (-1.) 1. |> pick
 
-let random_unit_vector () =
-  Vec.normalize @@ random_in_unit_sphere ()
+let random_unit_vector () = Vec.normalize @@ random_in_unit_sphere ()
+
+let random_vector_in_hemisphere normal =
+  let v = random_in_unit_sphere () in
+  if Vec.dot v normal > 0. then v else Vec.negate v
