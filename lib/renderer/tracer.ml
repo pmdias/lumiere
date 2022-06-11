@@ -7,15 +7,6 @@ let default_color (ray : Ray.t) =
   let t = 0.5 *. (direction.y +. 1.) in
   (Vec.make 1. 1. 1. *: (1. -. t)) +: (Vec.make 0.5 0.7 1. *: t)
 
-let material_color (hitrecord : Hitrecord.t) =
-  let ncolor = hitrecord.normal +: Vec.make 1. 1. 1. in
-  ncolor *: 0.5
-
-let color_sample ray c =
-  match c with
-  | None -> default_color ray
-  | Some hitrecord -> material_color hitrecord
-
 let is_hit = function
   | None -> false
   | _ -> true
@@ -24,10 +15,22 @@ let safe_head = function
   | [] -> None
   | x :: _ -> x
 
-let trace_sample scene ray =
-  List.map Object.hit_test @@ Scene.get_objects scene
-  |> List.map (fun x -> x ray 0.001 Float.infinity)
-  |> List.filter is_hit |> safe_head |> color_sample ray
+let rec trace_sample scene depth ray =
+  if depth <= 0 then
+    Vec.make 0. 0. 0.
+  else
+    List.map Object.hit_test @@ Scene.get_objects scene
+    |> List.map (fun x -> x ray 0.001 Float.infinity)
+    |> List.filter is_hit |> safe_head |> color_sample scene depth ray
+and color_sample scene depth ray sh =
+  let material_color (hitrecord : Hitrecord.t) =
+    let target = hitrecord.point +: hitrecord.normal +: Utils.random_in_unit_sphere () in
+    let new_ray = Ray.make hitrecord.point (target -: hitrecord.point) in
+    (trace_sample scene (depth  - 1) new_ray) *: 0.5
+  in
+  match sh with
+  | None -> default_color ray
+  | Some hitrecord -> material_color hitrecord
 
 let convert_pixel_to_camera_coordinates output x y =
   let width = Output.get_width output - 1 in
@@ -44,7 +47,7 @@ let trace_pixel scene output pixel_data =
   let inner_trace color =
     let u, v = convert_pixel_to_camera_coordinates output x y in
     let ray = Camera.get_ray camera u v in
-    ray |> trace_sample scene |> ( +: ) color
+    ray |> trace_sample scene 50 |> ( +: ) color
   in
   let color = Vec.make 0. 0. 0. in
   Seq.init 100 (fun x -> x)
