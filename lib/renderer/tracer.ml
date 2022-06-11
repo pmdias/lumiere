@@ -16,17 +16,20 @@ let safe_head = function
   | x :: _ -> x
 
 let rec trace_sample scene depth ray =
-  if depth <= 0 then
-    Vec.make 0. 0. 0.
+  if depth <= 0 then Vec.make 0. 0. 0.
   else
     List.map Object.hit_test @@ Scene.get_objects scene
     |> List.map (fun x -> x ray 0.001 Float.infinity)
-    |> List.filter is_hit |> safe_head |> color_sample scene depth ray
+    |> List.filter is_hit |> safe_head
+    |> color_sample scene depth ray
+
 and color_sample scene depth ray sh =
   let material_color (hitrecord : Hitrecord.t) =
-    let target = hitrecord.point +: hitrecord.normal +: Utils.random_in_unit_sphere () in
+    let target =
+      hitrecord.point +: hitrecord.normal +: Utils.random_in_unit_sphere ()
+    in
     let new_ray = Ray.make hitrecord.point (target -: hitrecord.point) in
-    (trace_sample scene (depth  - 1) new_ray) *: 0.5
+    trace_sample scene (depth - 1) new_ray *: 0.5
   in
   match sh with
   | None -> default_color ray
@@ -52,5 +55,5 @@ let trace_pixel scene output pixel_data =
   let color = Vec.make 0. 0. 0. in
   Seq.init 100 (fun x -> x)
   |> Seq.fold_left (fun acc _ -> inner_trace acc) color
-  |> (fun x -> x /: 100.)
+  |> (fun x -> Vec.fmap sqrt @@ (x /: 100.))
   |> Color.from_vec
