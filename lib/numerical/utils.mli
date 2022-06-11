@@ -18,3 +18,6 @@ val random_vector : float -> float -> Vec.t
 val random_in_unit_sphere : unit -> Vec.t
 (** Generate a new random [Vec.t] that is contained inside the unit
     sphere. *)
+
+val random_unit_vector : unit -> Vec.t
+(** Generate a new random unit [Vec.t] *)

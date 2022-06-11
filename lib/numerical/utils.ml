@@ -19,3 +19,6 @@ let rec random_in_unit_sphere () =
     | _ -> random_in_unit_sphere ()
   in
   random_vector (-1.) 1. |> pick
+
+let random_unit_vector () =
+  Vec.normalize @@ random_in_unit_sphere ()
