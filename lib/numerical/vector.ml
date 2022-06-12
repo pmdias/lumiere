@@ -76,6 +76,9 @@ module Vec = struct
     let y = a.y *. b.y in
     let z = a.z *. b.z in
     make x y z
+
+  let reflect v n =
+    subtract v @@ multiply n (2. *. dot v n)
 end
 
 let ( +: ) a b = Vec.add a b

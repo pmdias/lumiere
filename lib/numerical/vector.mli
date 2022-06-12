@@ -53,6 +53,7 @@ module Vec : sig
   (** Checks if a vector [v] is close to zero in all dimensions *)
 
   val vector_multiply : t -> t -> t
+  val reflect : t -> t -> t
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t
