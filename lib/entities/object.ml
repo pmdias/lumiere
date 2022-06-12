@@ -51,3 +51,9 @@ let make_sphere center radius albedo =
   let s = Sphere.make center radius in
   let hit_test = Sphere.hit_test s material in
   { hit_test; material }
+
+let make_metal_sphere center radius albedo =
+  let material = Material.make_metal albedo in
+  let s = Sphere.make center radius in
+  let hit_test = Sphere.hit_test s material in
+  { hit_test; material }
