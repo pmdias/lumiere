@@ -38,8 +38,15 @@ let make_dielectric index_of_refraction =
     let attenuation = Vec.make 1. 1. 1. in
     let refraction_ratio = if hitrecord.front_face then 1. /. index_of_refraction else index_of_refraction in
     let unit_direction = Vec.normalize ray.direction in
-    let refracted = Vec.refract unit_direction hitrecord.normal refraction_ratio in
-    let scattered_ray = Ray.make hitrecord.point refracted in
+
+    let cos_theta = Float.min 1. @@ Vec.dot hitrecord.normal @@ Vec.negate unit_direction in
+    let sin_theta = sqrt @@ 1. -. cos_theta *. cos_theta in
+    let cannot_refract = refraction_ratio *. sin_theta  > 1. in
+    let direction = match cannot_refract with
+      | true -> Vec.reflect unit_direction hitrecord.normal
+      | false -> Vec.refract unit_direction hitrecord.normal refraction_ratio
+    in
+    let scattered_ray = Ray.make hitrecord.point direction in
     Some (Scatter.make scattered_ray attenuation)
   in
   { _scatterer = dielectric_scatter }
