@@ -25,3 +25,5 @@ val random_unit_vector : unit -> Vec.t
 val random_vector_in_hemisphere : Vec.t -> Vec.t
 (** Generate a new random unit vector  [Vec.t] that is inside the same hemisphere
     given by [normal] vector. *)
+
+val random_in_unit_disk : unit -> Vec.t
