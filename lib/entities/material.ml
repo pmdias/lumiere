@@ -33,6 +33,11 @@ let make_metal albedo fuzz =
   in
   { _scatterer = metal_scatter }
 
+let reflectance cosine ref_idx =
+  let r0 = (1. -. ref_idx) /. (1. +. ref_idx) in
+  let r = r0 *. r0 in
+  r +. (1. -. r) *. ((1. -. cosine) ** 5.)
+
 let make_dielectric index_of_refraction =
   let dielectric_scatter (ray : Ray.t) (hitrecord : Hitrecord.t) =
     let attenuation = Vec.make 1. 1. 1. in
@@ -43,8 +48,8 @@ let make_dielectric index_of_refraction =
     let sin_theta = sqrt @@ 1. -. cos_theta *. cos_theta in
     let cannot_refract = refraction_ratio *. sin_theta  > 1. in
     let direction = match cannot_refract with
-      | true -> Vec.reflect unit_direction hitrecord.normal
-      | false -> Vec.refract unit_direction hitrecord.normal refraction_ratio
+      | true when reflectance cos_theta refraction_ratio > Utils.random_float 0. 1. -> Vec.reflect unit_direction hitrecord.normal
+      | _ -> Vec.refract unit_direction hitrecord.normal refraction_ratio
     in
     let scattered_ray = Ray.make hitrecord.point direction in
     Some (Scatter.make scattered_ray attenuation)
