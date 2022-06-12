@@ -6,7 +6,8 @@ let make_camera aspect_ratio =
   let lookfrom = Vec.make (-2.) 2. 1. in
   let lookat = Vec.make 0. 0. (-1.) in
   let vup = Vec.make 0. 1. 0. in
-  Camera.make lookfrom lookat vup 20. aspect_ratio
+  let dist_to_focus = Vec.length @@ (lookfrom -: lookat) in
+  Camera.make lookfrom lookat vup 30. aspect_ratio 2. dist_to_focus
 
 let scene_factory aspect_ratio =
   let camera = make_camera aspect_ratio in
