@@ -8,16 +8,23 @@ type t = {
   vertical : Vec.t;
 }
 
-let make aspect_ratio =
-  let height = 2. in
+let degrees_to_radians degrees = degrees *. Float.pi /. 180.
+
+let make lookfrom lookat vup vfov aspect_ratio =
+  let theta = degrees_to_radians vfov in
+  let h = Float.tan @@ (theta /. 2.) in
+  let height = 2. *. h in
   let width = aspect_ratio *. height in
-  let focal_length = 1. in
-  let origin = Vec.make 0. 0. 0. in
-  let horizontal = Vec.make width 0. 0. in
-  let vertical = Vec.make 0. height 0. in
+
+  let w = Vec.normalize @@ (lookfrom -: lookat) in
+  let u = Vec.normalize @@ Vec.cross vup w in
+  let v = Vec.cross w u in
+
+  let origin = lookfrom in
+  let horizontal = u *: width in
+  let vertical = v *: height in
   let lower_left_corner =
-    origin -: (horizontal /: 2.) -: (vertical /: 2.)
-    -: Vec.make 0. 0. focal_length
+    origin -: (horizontal /: 2.) -: (vertical /: 2.) -: w
   in
   { origin; lower_left_corner; horizontal; vertical }
 
