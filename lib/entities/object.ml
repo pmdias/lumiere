@@ -46,8 +46,8 @@ end
 
 let hit_test o = o.hit_test
 
-let make_sphere center radius =
-  let material = Material.make_lambertian @@ Vec.make 0.8 0.8 0. in
+let make_sphere center radius albedo =
+  let material = Material.make_lambertian albedo in
   let s = Sphere.make center radius in
   let hit_test = Sphere.hit_test s material in
   { hit_test; material }
