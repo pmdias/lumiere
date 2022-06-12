@@ -54,6 +54,7 @@ module Vec : sig
 
   val vector_multiply : t -> t -> t
   val reflect : t -> t -> t
+  val refract : t -> t -> float -> t
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t

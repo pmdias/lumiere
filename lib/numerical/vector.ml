@@ -79,6 +79,12 @@ module Vec = struct
 
   let reflect v n =
     subtract v @@ multiply n (2. *. dot v n)
+
+  let refract uv n etai_over_etat =
+    let cos_theta = Float.min 1. @@ dot n @@ negate uv in
+    let r_out_perp = multiply (add uv @@ multiply n cos_theta) etai_over_etat in
+    let r_out_parallel = multiply n @@ -1. *. (sqrt @@ Float.abs (1. -. length_squared r_out_perp)) in
+    add r_out_perp r_out_parallel
 end
 
 let ( +: ) a b = Vec.add a b
