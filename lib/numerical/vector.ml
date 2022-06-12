@@ -65,6 +65,11 @@ module Vec = struct
       make x y z
     in
     call
+
+  let near_zero v =
+    let s = 1e-8 in
+    let av = fmap Float.abs @@ v in
+    (av.x < s) && (av.y < s) && (av.z < s)
 end
 
 let ( +: ) a b = Vec.add a b

@@ -2,7 +2,7 @@ open Numerical
 open Numerical.Vector
 
 type hittable = Ray.t -> float -> float -> Hitrecord.t option
-type t = { hit_test : hittable }
+type t = { hit_test : hittable; material : Material.t }
 
 module Sphere = struct
   type t = { center : Vec.t; radius : float }
@@ -46,4 +46,5 @@ let hit_test o = o.hit_test
 let make_sphere center radius =
   let s = Sphere.make center radius in
   let hit_test = Sphere.hit_test s in
-  { hit_test }
+  let material = Material.make_lambertian @@ Vec.make 0.8 0.8 0. in
+  { hit_test; material; }

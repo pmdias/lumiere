@@ -48,6 +48,9 @@ module Vec : sig
   val fmap : (float -> float) -> t -> t
   (** Given a function [f] that maps a [float] to a [float], apply that function to each
       component of the vector [v] and return a new vector *)
+
+  val near_zero : t -> bool
+  (** Checks if a vector [v] is close to zero in all dimensions *)
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t
