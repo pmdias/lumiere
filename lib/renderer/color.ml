@@ -15,6 +15,12 @@ let from_vec (v : Vec.t) =
   let b = int_of_float @@ (v.z *. 255.999) in
   make r g b
 
+let to_vec c =
+  let x = float_of_int c.r /. 255.999 in
+  let y = float_of_int c.g /. 255.999 in
+  let z = float_of_int c.b /. 255.999 in
+  Vec.make x y z
+
 let get_red c = c.r
 let get_green c = c.g
 let get_blue c = c.b
