@@ -25,9 +25,12 @@ let rec trace_sample scene depth ray =
 
 and color_sample scene depth ray sh =
   let material_color (hitrecord : Hitrecord.t) (material : Material.t) =
-    let scatter = Material.scatter material ray hitrecord in
-    Vec.vector_multiply scatter.attenuation
-    @@ trace_sample scene (depth - 1) scatter.scattered_ray
+    let scatter_option = Material.scatter material ray hitrecord in
+    match scatter_option with
+    | None -> Vec.make 0. 0. 0.
+    | Some scatter ->
+        Vec.vector_multiply scatter.attenuation
+        @@ trace_sample scene (depth - 1) scatter.scattered_ray
   in
   match sh with
   | None -> default_color ray

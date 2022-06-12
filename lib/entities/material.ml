@@ -7,7 +7,7 @@ module Scatter = struct
   let make scattered_ray attenuation = { scattered_ray; attenuation }
 end
 
-type t = { _scatterer : Ray.t -> Hitrecord.t -> Scatter.t }
+type t = { _scatterer : Ray.t -> Hitrecord.t -> Scatter.t  option }
 
 let get_scatterer material = material._scatterer
 let scatter material ray hitrecord = get_scatterer material ray hitrecord
@@ -18,6 +18,6 @@ let make_lambertian albedo =
     let scatter_direction =
       if Vec.near_zero direction then hitrecord.normal else direction
     in
-    Scatter.make (Ray.make hitrecord.point scatter_direction) albedo
+    Some (Scatter.make (Ray.make hitrecord.point scatter_direction) albedo)
   in
   { _scatterer = lambertian_scatter }
