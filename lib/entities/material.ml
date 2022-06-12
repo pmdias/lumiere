@@ -22,10 +22,10 @@ let make_lambertian albedo =
   in
   { _scatterer = lambertian_scatter }
 
-let make_metal albedo =
+let make_metal albedo fuzz =
   let metal_scatter (ray : Ray.t) (hitrecord : Hitrecord.t) =
     let reflected = Vec.reflect (Vec.normalize ray.direction) hitrecord.normal in
-    let scatterd_ray = Ray.make hitrecord.point reflected in
+    let scatterd_ray = Ray.make hitrecord.point (reflected +: (Utils.random_in_unit_sphere () *: fuzz)) in
     if (Vec.dot scatterd_ray.direction hitrecord.normal) > 0. then
       Some (Scatter.make scatterd_ray albedo)
     else

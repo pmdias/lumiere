@@ -16,4 +16,4 @@ val make_sphere : Vec.t -> float -> Vec.t -> t
 (** Create a new object [t] that emulates the behaviour of a sphere shaped
     structure. *)
 
-val make_metal_sphere : Vec.t -> float -> Vec.t -> t
+val make_metal_sphere : Vec.t -> float -> Vec.t -> float -> t
