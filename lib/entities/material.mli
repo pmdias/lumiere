@@ -9,5 +9,4 @@ module Scatter : sig
 end
 
 val scatter : t -> Ray.t -> Hitrecord.t -> Scatter.t
-
 val make_lambertian : Vec.t -> t
