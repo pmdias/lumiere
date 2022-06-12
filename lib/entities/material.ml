@@ -32,3 +32,14 @@ let make_metal albedo fuzz =
       None
   in
   { _scatterer = metal_scatter }
+
+let make_dielectric index_of_refraction =
+  let dielectric_scatter (ray : Ray.t) (hitrecord : Hitrecord.t) =
+    let attenuation = Vec.make 1. 1. 1. in
+    let refraction_ratio = if hitrecord.front_face then 1. /. index_of_refraction else index_of_refraction in
+    let unit_direction = Vec.normalize ray.direction in
+    let refracted = Vec.refract unit_direction hitrecord.normal refraction_ratio in
+    let scattered_ray = Ray.make hitrecord.point refracted in
+    Some (Scatter.make scattered_ray attenuation)
+  in
+  { _scatterer = dielectric_scatter }

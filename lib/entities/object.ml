@@ -57,3 +57,9 @@ let make_metal_sphere center radius albedo fuzz =
   let s = Sphere.make center radius in
   let hit_test = Sphere.hit_test s material in
   { hit_test; material }
+
+let make_dielectric_sphere center radius index_of_refraction =
+  let material = Material.make_dielectric index_of_refraction in
+  let s = Sphere.make center radius in
+  let hit_test = Sphere.hit_test s material in
+  { hit_test; material }
