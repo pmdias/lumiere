@@ -21,3 +21,14 @@ let make_lambertian albedo =
     Some (Scatter.make (Ray.make hitrecord.point scatter_direction) albedo)
   in
   { _scatterer = lambertian_scatter }
+
+let make_metal albedo =
+  let metal_scatter (ray : Ray.t) (hitrecord : Hitrecord.t) =
+    let reflected = Vec.reflect (Vec.normalize ray.direction) hitrecord.normal in
+    let scatterd_ray = Ray.make hitrecord.point reflected in
+    if (Vec.dot scatterd_ray.direction hitrecord.normal) > 0. then
+      Some (Scatter.make scatterd_ray albedo)
+    else
+      None
+  in
+  { _scatterer = metal_scatter }

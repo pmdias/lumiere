@@ -10,3 +10,4 @@ end
 
 val scatter : t -> Ray.t -> Hitrecord.t -> Scatter.t option
 val make_lambertian : Vec.t -> t
+val make_metal : Vec.t -> t
