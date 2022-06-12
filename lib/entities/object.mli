@@ -5,7 +5,7 @@ type t
 (** Opaque type that encapsulates an object that exists in the simulation world,
     and therefore makes up part of the rendering scene *)
 
-type hittable = Ray.t -> float -> float -> Hitrecord.t option
+type hittable = Ray.t -> float -> float -> (Hitrecord.t * Material.t) option
 (** Type used to represent any shape that can be hit and therefore return
     information regarding a specific ray hitting the shape. *)
 

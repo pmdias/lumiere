@@ -1,7 +1,7 @@
 open Numerical
 open Numerical.Vector
 
-type hittable = Ray.t -> float -> float -> Hitrecord.t option
+type hittable = Ray.t -> float -> float -> (Hitrecord.t * Material.t) option
 type t = { hit_test : hittable; material : Material.t }
 
 module Sphere = struct
@@ -25,7 +25,7 @@ module Sphere = struct
     | None, Some v -> Some (get_hit_record sphere ray v)
     | Some v, _ -> Some (get_hit_record sphere ray v)
 
-  let hit_test sphere (ray : Ray.t) t_min t_max =
+  let hit_test sphere material (ray : Ray.t) t_min t_max =
     let oc = ray.origin -: sphere.center in
     let a = Vec.length_squared ray.direction in
     let half_b = Vec.dot oc ray.direction in
@@ -35,7 +35,10 @@ module Sphere = struct
       let sqrtd = sqrt discriminant in
       let root_a = check_root ((-.half_b -. sqrtd) /. a) t_min t_max in
       let root_b = check_root ((-.half_b +. sqrtd) /. a) t_min t_max in
-      (root_a, root_b) |> match_roots sphere ray
+      (root_a, root_b) |> match_roots sphere ray |> fun r ->
+      match r with
+      | None -> None
+      | Some h -> Some (h, material)
     else None
 
   let make center radius = { center; radius }
@@ -44,7 +47,7 @@ end
 let hit_test o = o.hit_test
 
 let make_sphere center radius =
-  let s = Sphere.make center radius in
-  let hit_test = Sphere.hit_test s in
   let material = Material.make_lambertian @@ Vec.make 0.8 0.8 0. in
-  { hit_test; material; }
+  let s = Sphere.make center radius in
+  let hit_test = Sphere.hit_test s material in
+  { hit_test; material }

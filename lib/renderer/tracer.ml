@@ -24,16 +24,14 @@ let rec trace_sample scene depth ray =
     |> color_sample scene depth ray
 
 and color_sample scene depth ray sh =
-  let material_color (hitrecord : Hitrecord.t) =
-    let target =
-      hitrecord.point +: hitrecord.normal +: Utils.random_vector_in_hemisphere hitrecord.normal
-    in
-    let new_ray = Ray.make hitrecord.point (target -: hitrecord.point) in
-    trace_sample scene (depth - 1) new_ray *: 0.5
+  let material_color (hitrecord : Hitrecord.t) (material : Material.t) =
+    let scatter = Material.scatter material ray hitrecord in
+    Vec.vector_multiply scatter.attenuation
+    @@ trace_sample scene (depth - 1) scatter.scattered_ray
   in
   match sh with
   | None -> default_color ray
-  | Some hitrecord -> material_color hitrecord
+  | Some (hitrecord, material) -> material_color hitrecord material
 
 let convert_pixel_to_camera_coordinates output x y =
   let width = Output.get_width output - 1 in
