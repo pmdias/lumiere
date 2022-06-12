@@ -7,7 +7,8 @@ let scene_factory aspect_ratio =
   let objects =
     [
       Object.make_sphere (Vec.make 0. 0. (-1.)) 0.5 (Vec.make 0.7 0.3 0.3);
-      Object.make_metal_sphere (Vec.make (-1.) 0. (-1.)) 0.5 (Vec.make 0.8 0.8 0.8) 0.;
+      Object.make_metal_sphere (Vec.make (-1.) 0. (-1.)) 0.5
+        (Vec.make 0.8 0.8 0.8) 0.;
       Object.make_dielectric_sphere (Vec.make 1. 0. (-1.)) 0.5 1.5;
       Object.make_sphere (Vec.make 0. (-100.5) (-1.)) 100. (Vec.make 0.8 0.8 0.);
     ]

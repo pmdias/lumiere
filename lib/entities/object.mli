@@ -17,5 +17,4 @@ val make_sphere : Vec.t -> float -> Vec.t -> t
     structure. *)
 
 val make_metal_sphere : Vec.t -> float -> Vec.t -> float -> t
-
 val make_dielectric_sphere : Vec.t -> float -> float -> t
