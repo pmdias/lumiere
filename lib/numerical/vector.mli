@@ -51,6 +51,8 @@ module Vec : sig
 
   val near_zero : t -> bool
   (** Checks if a vector [v] is close to zero in all dimensions *)
+
+  val vector_multiply : t -> t -> t
 end
 
 val ( +: ) : Vec.t -> Vec.t -> Vec.t
