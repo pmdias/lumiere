@@ -9,14 +9,17 @@ module Plane = struct
 
   let make point normal = { point; normal; }
 
-  let hit_test plane material (ray : Ray.t) _ _ =
+  let hit_test plane material (ray : Ray.t) t_min t_max =
     let denom = Vec.dot plane.normal ray.direction in
-    if denom > 0. then
+    if Float.abs denom > 0. then
       let p0l0 = plane.point -: ray.origin in
       let t = Vec.dot p0l0 plane.normal /. denom in
-      let point = Ray.at ray t in
-      let record = Hitrecord.make point plane.normal t false in
-      Some (Hitrecord.set_front_face record ray plane.normal, material)
+      if t > t_min && t < t_max then
+        let point = Ray.at ray t in
+        let record = Hitrecord.make point plane.normal t false in
+        Some (Hitrecord.set_front_face record ray plane.normal, material)
+      else
+        None
     else
       None
 end
