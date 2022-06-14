@@ -12,6 +12,8 @@ type hittable = Ray.t -> float -> float -> (Hitrecord.t * Material.t) option
 val hit_test : t -> hittable
 (** Access the hit test of a specific object [t] instance *)
 
+val make_plane : Vec.t -> Vec.t -> Vec.t -> t
+
 val make_sphere : Vec.t -> float -> Vec.t -> t
 (** Create a new object [t] that emulates the behaviour of a sphere shaped
     structure. *)

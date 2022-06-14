@@ -4,6 +4,23 @@ open Numerical.Vector
 type hittable = Ray.t -> float -> float -> (Hitrecord.t * Material.t) option
 type t = { hit_test : hittable; material : Material.t }
 
+module Plane = struct
+  type t = { point : Vec.t; normal : Vec.t }
+
+  let make point normal = { point; normal; }
+
+  let hit_test plane material (ray : Ray.t) _ _ =
+    let denom = Vec.dot plane.normal ray.direction in
+    if denom > 0. then
+      let p0l0 = plane.point -: ray.origin in
+      let t = Vec.dot p0l0 plane.normal /. denom in
+      let point = Ray.at ray t in
+      let record = Hitrecord.make point plane.normal t false in
+      Some (Hitrecord.set_front_face record ray plane.normal, material)
+    else
+      None
+end
+
 module Sphere = struct
   type t = { center : Vec.t; radius : float }
 
@@ -45,6 +62,12 @@ module Sphere = struct
 end
 
 let hit_test o = o.hit_test
+
+let make_plane point normal albedo =
+  let material = Material.make_lambertian albedo in
+  let plane = Plane.make point normal in
+  let hit_test = Plane.hit_test plane material in
+  { hit_test; material }
 
 let make_sphere center radius albedo =
   let material = Material.make_lambertian albedo in
