@@ -48,12 +48,13 @@ let make_row a =
 let make_random_scene () =
   let camera = make_camera (3. /. 2.) in
   let ground = make_ground_sphere () in
+  let big_sphere = Object.make_metal_sphere (Vec.make 0. 1. 0.) 1. (Vec.make 0.8 0.8 0.8) 0.1 in
   let spheres =
     Seq.init 3 (fun x -> x - 1)
     |> Seq.map make_row
     |> Seq.fold_left (fun acc r -> acc @ r) []
   in
-  let world = [ ground ] @ spheres in
+  let world = [ ground; big_sphere ] @ spheres in
   Scene.make camera world
 
 (** let scene_factory aspect_ratio =
