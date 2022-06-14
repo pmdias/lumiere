@@ -7,20 +7,18 @@ let default_color (ray : Ray.t) =
   let t = 0.5 *. (direction.y +. 1.) in
   (Vec.make 1. 1. 1. *: (1. -. t)) +: (Vec.make 0.5 0.7 1. *: t)
 
-let is_hit = function
-  | None -> false
-  | _ -> true
-
 let safe_head = function
   | [] -> None
-  | x :: _ -> x
+  | x :: _ -> Some x
 
 let rec trace_sample scene depth ray =
   if depth <= 0 then Vec.make 0. 0. 0.
   else
     List.map Object.hit_test @@ Scene.get_objects scene
     |> List.map (fun x -> x ray 0.001 Float.infinity)
-    |> List.filter is_hit |> safe_head
+    |> List.filter_map Fun.id
+    |> List.sort (fun a b -> Hitrecord.compare (fst a) (fst b))
+    |> safe_head
     |> color_sample scene depth ray
 
 and color_sample scene depth ray sh =
@@ -47,6 +45,9 @@ let convert_pixel_to_camera_coordinates output x y =
 
 let trace_pixel scene output pixel_data =
   let _, _, x, y = pixel_data in
+  (* let total, current, x, y = pixel_data in *)
+  (* let percentage = (float_of_int current) /. (float_of_int total) in *)
+  (* Printf.fprintf stderr "Current percentage: %f\n" percentage; *)
   let camera = Scene.get_camera scene in
   let inner_trace color =
     let u, v = convert_pixel_to_camera_coordinates output x y in

@@ -12,3 +12,5 @@ val set_front_face : t -> Ray.t -> Vec.t -> t
 (** Given a hit record [h], a ray [r], and a normal vector [n], this function
     updates the hit record so that the normal that is stored inside is pointing
     outside the surface. *)
+
+val compare : t -> t -> int
