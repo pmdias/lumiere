@@ -26,10 +26,6 @@ let make_random_sphere center =
   | _ when choose_mat < 0.8 -> make_diffuse_sphere center
   | _ -> make_metal_sphere center
 
-let make_ground_sphere () =
-  let center = Vec.make 0. (-1000.) 0. in
-  Object.make_sphere center 1000. @@ Vec.make 0.5 0.5 0.5
-
 let make_random_point a b =
   let x = float_of_int a in
   let y = float_of_int b in
@@ -47,7 +43,7 @@ let make_row a =
 
 let make_random_scene () =
   let camera = make_camera (3. /. 2.) in
-  let ground = make_ground_sphere () in
+  let ground = Object.make_plane (Vec.make 0. 0. 0.) (Vec.make 0. 1. 0.) (Vec.make 0.3 0.3 0.45) in
   let big_sphere = Object.make_metal_sphere (Vec.make 0. 1. 0.) 1. (Vec.make 0.8 0.8 0.8) 0.1 in
   let spheres =
     Seq.init 3 (fun x -> x - 1)
