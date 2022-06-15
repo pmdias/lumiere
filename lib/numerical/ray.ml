@@ -1,6 +1,6 @@
-open Vector
+open Gg
 
-type t = { origin : Vec.t; direction : Vec.t }
+type t = { origin : V3.t; direction : V3.t }
 
 let make origin direction = { origin; direction }
-let at r t = r.origin +: (r.direction *: t)
+let at r t = V3.(r.origin + t * r.direction)
