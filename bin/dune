@@ -1,4 +1,11 @@
 (executable
  (public_name lumiere)
  (name main)
+ (modules main)
  (libraries renderer entities numerical))
+
+(executable
+  (public_name lumiere_demo)
+  (name demo)
+  (modules demo)
+  (libraries renderer entities numerical))
